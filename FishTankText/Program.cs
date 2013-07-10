@@ -17,20 +17,19 @@ namespace FishTank.UI.Text
             Fish.AvatarWidth = 3;
             Tank tank = new Tank(1000, 500);
             TextTankAdapter adapter = new TextTankAdapter(tank, Console.WindowWidth, Console.WindowHeight - 1);
-            Stopwatch clock = new Stopwatch();
-            clock.Start();
-
+            DateTime start = DateTime.Now;
             adapter.ExecuteScript("help");
 
             while (adapter.IsRunning)
             {
-                adapter.Print();
                 adapter.ProcessInput();
-                if ((int)clock.ElapsedMilliseconds > (int)SystemVariables.Vars["SPEED"])
+                TimeSpan delta = DateTime.Now - start;
+                if (delta.TotalMilliseconds > (int)SystemVariables.Vars["SPEED"])
                 {
-                    tank.Update((int)clock.ElapsedMilliseconds);
-                    clock.Reset();
-                    clock.Start();
+                    for (int i = 0; i < delta.TotalMilliseconds; i += (int)SystemVariables.Vars["TIMESTEP"])
+                        tank.Update((int)SystemVariables.Vars["TIMESTEP"]);
+                    adapter.Print();
+                    start += delta;
                 }
             }
         }

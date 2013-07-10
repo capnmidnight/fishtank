@@ -11,6 +11,7 @@ namespace ScriptedSystem
         {
             Vars = new Dictionary<string, object>();
             Vars.Add("SPEED", 250);
+            Vars.Add("TIMESTEP", 100);
         }
     }
 }

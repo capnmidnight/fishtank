@@ -18,11 +18,21 @@ namespace ScriptedSystem
             this.AddCommand("exit", new CommandDelegate(Exit), false);
             this.AddCommand("set", new CommandDelegate(this.Set), false);
             this.AddCommand("set_speed", new CommandDelegate(this.SetSpeed), true);
+            this.AddCommand("set_step", new CommandDelegate(this.SetStep), true);
+        }
+
+        private void SetVar(string key, string[] args)
+        {
+            int value = int.Parse(args[0]);
+            SystemVariables.Vars[key] = value;
         }
         private void SetSpeed(string[] args)
         {
-            int speed = int.Parse(args[0]);
-            SystemVariables.Vars["SPEED"] = speed;
+            SetVar("SPEED", args);
+        }
+        private void SetStep(string[] args)
+        {
+            SetVar("TIMESTEP", args);
         }
         private void Set(string[] args)
         {

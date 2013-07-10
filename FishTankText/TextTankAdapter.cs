@@ -40,7 +40,7 @@ namespace FishTank.UI.Text
         private bool isVerbose;
         private TextAdapter text;
         private Dictionary<Type, PrintingDelegate> printers;
-
+        private string top;
         public TextTankAdapter(Tank tank, int width, int height)
             : base(tank, width, height)
         {
@@ -50,6 +50,9 @@ namespace FishTank.UI.Text
             this.AddCommand("verbose", new CommandDelegate(this.Verbose), false);
             this.AddCommand("help", new CommandDelegate(this.Help), false);
             this.text = new TextAdapter(this, Console.WindowWidth, Console.WindowHeight - 1);
+            top = "";
+            for (int i = 0; i < width; ++i)
+                top += "~";
             printers = new Dictionary<Type, PrintingDelegate>();
             printers.Add(typeof(Fish), new PrintingDelegate(PrintFish));
             printers.Add(typeof(Poop), new PrintingDelegate(PrintPoop));
@@ -214,7 +217,7 @@ namespace FishTank.UI.Text
         }
         private void ASCIIPrint()
         {
-            this.text.buffer.Set(0, 0, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", ConsoleColor.DarkBlue);
+            this.text.buffer.Set(0, 0, top, ConsoleColor.DarkBlue);
 
             foreach (TankObject obj in tank.Objects)
             {
